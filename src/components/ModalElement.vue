@@ -1,31 +1,56 @@
 <template>
-  <div class="modal-wrapper">
-    <div class="modal-container">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container" ref="modal">
 
-      <div class="modal-header">
-        <slot name="header">
-          default header
-        </slot>
-      </div>
+          <div class="modal-header">
+            <slot name="header">
+              default header
+            </slot>
+          </div>
 
-      <div class="modal-body">
-        <slot name="body">
-          default body
-        </slot>
-      </div>
+          <div class="modal-body">
+            <slot name="body">
+              default body
+            </slot>
+          </div>
 
-      <div class="modal-footer">
-        <button class="modal-default-button" @click="$emit('close')">
-          Close
-        </button>
+          <div class="modal-footer">
+            <button class="modal-default-button" @click="$emit('close')">
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
+
+
+
 export default {
-  
+  mounted() {
+    this.setupClickOutside(this.$refs.modal)
+  },
+  destroyed() {
+    document.removeEventListener('click', () => {})
+  },
+  methods: {
+    setupClickOutside(el) {
+      let self = this
+      this.$root.$el.addEventListener('click', function clickOutside(e) {
+        if (el.contains(e.target)) {
+          return
+        } else {
+          self.$emit('close')
+          self.$root.$el.removeEventListener("click", clickOutside);
+        }
+      })
+    }
+  }
 }
 </script>
 

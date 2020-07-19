@@ -2,16 +2,12 @@
   <div id="app">
     {{ msg }}
     <div>
-      <button @click="onClickOpen">Open</button>
+      <button @click.stop="modalToggle">Open</button>
     </div>
-    <transition name="modal"  v-if="showModal">
-      <div class="modal-mask">
-        <modal @close="modalToggle">
-          <h3 slot="header">Modal</h3>
-          <div slot="body">안녕하세요. 저는 모달입니다.</div>
-        </modal>
-      </div>
-    </transition>
+    <modal v-if="showModal" @close="modalToggle">
+      <h3 slot="header">Modal</h3>
+      <div slot="body">안녕하세요. 저는 모달입니다.</div>
+    </modal>
   </div>
 </template>
 
@@ -30,9 +26,6 @@ export default {
     }
   },
   methods: {
-    onClickOpen() {
-      this.modalToggle()
-    },
     modalToggle() {
       this.showModal = !this.showModal
     }
