@@ -35,9 +35,6 @@ export default {
   mounted() {
     this.setupClickOutside(this.$refs.modal)
   },
-  destroyed() {
-    document.removeEventListener('click', () => {})
-  },
   methods: {
     setupClickOutside(el) {
       let self = this
